@@ -1,0 +1,209 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="calendar.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script type="text/javascript">
+      // Your Client ID can be retrieved from your project in the Google
+      // Developer Console, https://console.developers.google.com
+      var CLIENT_ID = '185061841282-h5neflk4dbi9js7g0a3ua36oao1eblj1.apps.googleusercontent.com';
+
+      var SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
+
+      /**
+       * Check if current user has authorized this application.
+       */
+      function checkAuth() {
+        gapi.auth.authorize(
+          {
+            'client_id': CLIENT_ID,
+            'scope': SCOPES.join(' '),
+            'immediate': true
+          }, handleAuthResult);
+      }
+
+      /**
+       * Handle response from authorization server.
+       *
+       * @param {Object} authResult Authorization result.
+       */
+      function handleAuthResult(authResult) {
+        var authorizeDiv = document.getElementById('authorize-div');
+        if (authResult && !authResult.error) {
+          // Hide auth UI, then load client library.
+          authorizeDiv.style.display = 'none';
+          loadCalendarApi();
+        } else {
+          // Show auth UI, allowing the user to initiate authorization by
+          // clicking authorize button.
+          authorizeDiv.style.display = 'inline';
+        }
+      }
+
+      /**
+       * Initiate auth flow in response to user clicking authorize button.
+       *
+       * @param {Event} event Button click event.
+       */
+      function handleAuthClick(event) {
+        gapi.auth.authorize(
+          {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
+          handleAuthResult);
+        return false;
+      }
+
+      /**
+       * Load Google Calendar client library. List upcoming events
+       * once client library is loaded.
+       */
+      function loadCalendarApi() {
+        gapi.client.load('calendar', 'v3', listUpcomingEvents);
+      }
+
+      /**
+       * Print the summary and start datetime/date of the next ten events in
+       * the authorized user's calendar. If no events are found an
+       * appropriate message is printed.
+
+       */
+
+      function formatDate(date) {
+        var d = new Date(date);
+        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+        var formattedDate = days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate();
+        return formattedDate;
+      }
+
+      function formatTime(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        if (minutes < 10) {
+          minutes = '0' + minutes;
+        }
+        if (hours < 12) {
+          var formattedTime = hours + ':' + minutes + 'AM';
+        } else if (hours == 12) {
+          var formattedTime = hours + ':' + minutes + 'PM';
+        } else {
+          formattedTime = (hours - 12) + ':' + minutes + 'PM';
+        }
+        return formattedTime;
+      }
+      function listUpcomingEvents() {
+        var request = gapi.client.calendar.events.list({
+          'calendarId': 'primary',
+          'timeMin': (new Date()).toISOString(),
+          'showDeleted': false,
+          'singleEvents': true,
+          'maxResults': 10,
+          'orderBy': 'startTime'
+        });
+
+        request.execute(function(resp) {
+          var events = resp.items; 
+          
+          // appendPre('Upcoming events:');
+
+          if (events.length > 0) {
+            for (i = 0; i < events.length; i++) {
+              var event = events[i];
+              var start = new Date(Date.parse(event.start.dateTime));
+              if (start == 'Invalid Date') {
+                date = formatDate(new Date(event.start.date)) + ' - ' + formatDate(new Date(event.end.date));
+                time = '';
+              } else {
+                date = formatDate(start);
+                time = formatTime(start) + ' - ' + formatTime(new Date(Date.parse(event.end.dateTime));
+              }
+              var attributes = {
+                description: event.description, 
+                title: event.summary, 
+                location: event.location,
+                date: date,
+                time: time
+              }
+              createSlide(attributes);
+            }    
+          } else {
+            $('body').append('No upcoming events found.');
+          }
+          $('.slide:first-child').show();
+
+        });
+      }
+      
+
+      /**
+       * Append a pre element to the body containing the given message
+       * as its text node.
+       *
+       * @param {string} message Text to be placed in pre element.
+       */
+
+       function createSlide(attributes, start, end) {
+          var color, url, height = window.innerHeight;          
+          
+          switch (attributes.location) {
+            case 'location':
+              url = 'http://www.planwallpaper.com/static/images/colorful-triangles-background_yB0qTG6.jpg';
+              break;
+            case 'dinner':
+              url = 'http://7-themes.com/data_images/out/6/6789304-fantastic-seafood-dinner-wallpaper.jpg';
+              break;
+            case 'event':
+              url = 'http://www.planwallpaper.com/static/images/518071-background-hd_xO1TwRc.jpg';
+              break;
+            case 'meeting':
+              url = 'https://pixabay.com/static/uploads/photo/2016/01/06/07/06/bokeh-1123696_960_720.jpg';
+              break;
+            case 'pitch':
+              color = 'https://i.ytimg.com/vi/PYp4wyTPqnA/maxresdefault.jpg';
+              break;
+            case 'visitor':
+              color = 'green';
+              break;
+            case 'default':
+              color = 'green';
+              break;
+            default:
+              url = location.toString();
+              // url = location;
+              break;
+          }
+          $('#view').append($('<div/>')
+            .addClass('slide')
+            .height(height)
+            .css({'background':'url(' + url + ')'})
+            .click(function(){
+                var index = $(this).index();
+                $('.slide').hide();
+                $('.slide:nth-child(' + (index + 2) + ')').show();
+              })
+            .append($('<div/>')
+              .append($('<h1/>').text(attributes.title))
+              .append($('<h3/>').text(attributes.date))
+              .append($('<h3/>').text(attributes.time))
+              .append($('<p/>').text(attributes.description)))
+            .hide()
+          );
+       }
+
+
+
+    </script>
+    <script src="https://apis.google.com/js/client.js?onload=checkAuth">
+    </script>
+  </head>
+  <body>
+    <div id="authorize-div" style="display: none">
+      <span>Authorize access to Google Calendar API</span>
+      <!--Button for the user to click to initiate auth sequence -->
+      <button id="authorize-button" onclick="handleAuthClick(event)">
+        Authorize
+      </button>
+    </div>
+    <pre id="output"></pre>
+    <div id='view'>
+    </div>
+  </body>
+</html>
