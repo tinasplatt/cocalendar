@@ -1,13 +1,21 @@
 <html>
   <head>
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" href="calendar.css">
+
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script type="text/javascript">
       // Your Client ID can be retrieved from your project in the Google
       // Developer Console, https://console.developers.google.com
       var CLIENT_ID = '185061841282-h5neflk4dbi9js7g0a3ua36oao1eblj1.apps.googleusercontent.com';
 
       var SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
+      var delay = 10;
 
       /**
        * Check if current user has authorized this application.
@@ -113,7 +121,7 @@
                 time = '';
               } else {
                 date = formatDate(start);
-                time = formatTime(start) + ' - ' + formatTime(new Date(Date.parse(event.end.dateTime));
+                time = formatTime(start) + ' - ' + formatTime(new Date(Date.parse(event.end.dateTime)));
               }
               var attributes = {
                 description: event.description, 
@@ -127,10 +135,33 @@
           } else {
             $('body').append('No upcoming events found.');
           }
+          $('.dropdown-menu li').click(function() {
+            delay = $(this).text();
+          })
           $('.slide:first-child').show();
+          animate();
 
         });
       }
+
+      function animate() {
+        setTimeout(function() {
+          var index = $('.slide:visible').index();
+          if (index == $('.slide').length - 1) {
+            index = 1;
+          } else {
+            index = index + 2;
+          }
+          $('.slide').fadeOut();
+          $('.slide:nth-child(' + index + ')').delay('slow').fadeIn();
+          return animate();
+     
+        }, delay * 1000);
+      };
+
+
+        
+
       
 
       /**
@@ -141,7 +172,7 @@
        */
 
        function createSlide(attributes, start, end) {
-          var color, url, height = window.innerHeight;          
+          var color, url, height = window.innerHeight;         
           
           switch (attributes.location) {
             case 'location':
@@ -157,7 +188,7 @@
               url = 'https://pixabay.com/static/uploads/photo/2016/01/06/07/06/bokeh-1123696_960_720.jpg';
               break;
             case 'pitch':
-              color = 'https://i.ytimg.com/vi/PYp4wyTPqnA/maxresdefault.jpg';
+              url = 'https://i.ytimg.com/vi/PYp4wyTPqnA/maxresdefault.jpg';
               break;
             case 'visitor':
               color = 'green';
@@ -166,7 +197,7 @@
               color = 'green';
               break;
             default:
-              url =  'http://www.planwallpaper.com/static/images/colorful-triangles-background_yB0qTG6.jpg';
+              url =  attributes.location;
               // url = location;
               break;
           }
@@ -174,11 +205,6 @@
             .addClass('slide')
             .height(height)
             .css({'background':'url(' + url + ')'})
-            .click(function(){
-                var index = $(this).index();
-                $('.slide').hide();
-                $('.slide:nth-child(' + (index + 2) + ')').show();
-              })
             .append($('<div/>')
               .append($('<h1/>').text(attributes.title))
               .append($('<h3/>').text(attributes.date))
@@ -190,11 +216,23 @@
 
 
 
+
     </script>
     <script src="https://apis.google.com/js/client.js?onload=checkAuth">
     </script>
   </head>
   <body>
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li><a>5</a></li>
+        <li><a>10</a></li>
+        <li><a>15</a></li>
+        <li><a>20</a></li>
+      </ul>
+    </div>
     <div id="authorize-div" style="display: none">
       <span>Authorize access to Google Calendar API</span>
       <!--Button for the user to click to initiate auth sequence -->
@@ -202,8 +240,8 @@
         Authorize
       </button>
     </div>
-    <pre id="output"></pre>
     <div id='view'>
+
     </div>
   </body>
 </html>
