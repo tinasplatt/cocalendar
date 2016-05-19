@@ -1,8 +1,11 @@
 .slide {
 	width: 100%;
-	background-size: cover;
-	background-repeat: none;
+	background-repeat: no-repeat;
 	background-position: center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 .slide div {
 	background: rgba(0,0,0,0.3);
