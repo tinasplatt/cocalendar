@@ -1,0 +1,28 @@
+.slide {
+	width: 100%
+}
+.slide div {
+	background: rgba(0,0,0,0.3);
+	color:white;
+	width:50%;
+	padding:20px;
+}
+.view {
+	width: 100%
+}
+body {
+	padding:0;
+	margin:0;
+	background: black;
+}
+.dropdown {
+	position: fixed;
+	right:0;
+	margin:10px;
+}
+#settings{
+	background:transparent;
+	color:white;
+	padding:15px;
+
+}
