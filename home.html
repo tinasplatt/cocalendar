@@ -174,31 +174,45 @@
        function createSlide(attributes, start, end) {
           var color, url, height = window.innerHeight;         
           
-          switch (attributes.location) {
-            case 'location':
-              url = 'http://www.planwallpaper.com/static/images/colorful-triangles-background_yB0qTG6.jpg';
-              break;
-            case 'dinner':
-              url = 'http://7-themes.com/data_images/out/6/6789304-fantastic-seafood-dinner-wallpaper.jpg';
-              break;
-            case 'event':
-              url = 'http://www.planwallpaper.com/static/images/518071-background-hd_xO1TwRc.jpg';
-              break;
-            case 'meeting':
-              url = 'https://pixabay.com/static/uploads/photo/2016/01/06/07/06/bokeh-1123696_960_720.jpg';
-              break;
-            case 'pitch':
-              url = 'https://i.ytimg.com/vi/PYp4wyTPqnA/maxresdefault.jpg';
-              break;
-            case 'visitor':
-              color = 'green';
-              break;
-            case 'default':
-              color = 'green';
-              break;
-            default:
+          // switch (attributes.location) {
+            // case 'location':
+            //   url = 'http://www.planwallpaper.com/static/images/colorful-triangles-background_yB0qTG6.jpg';
+            //   break;
+            // case 'dinner':
+            //   url = 'http://7-themes.com/data_images/out/6/6789304-fantastic-seafood-dinner-wallpaper.jpg';
+            //   break;
+            // case 'event':
+            //   url = 'http://www.planwallpaper.com/static/images/518071-background-hd_xO1TwRc.jpg';
+            //   break;
+            // case 'meeting':
+            //   url = 'https://pixabay.com/static/uploads/photo/2016/01/06/07/06/bokeh-1123696_960_720.jpg';
+            //   break;
+            // case 'pitch':
+            //   url = 'https://i.ytimg.com/vi/PYp4wyTPqnA/maxresdefault.jpg';
+            //   break;
+            // case 'visitor':
+            //   color = 'green';
+            //   break;
+            // case 'default':
+            //   color = 'green';
+            //   break;
+            // default:
               // url =  attributes.location;
-              url = 'landscape.png';
+          switch(Math.floor(Math.random() * 5))
+            case 0:
+              url = 'landscape1.png';
+              break;
+            case 1: 
+              url = 'landscape2.png';
+              break;
+            case 2: 
+              url = 'landscape3.png';
+              break;
+            case 3: 
+              url = 'landscape4.png';
+              break; 
+            default: 
+              url = 'landscape5.png';
               break;
           }
           $('#view').append($('<div/>')
