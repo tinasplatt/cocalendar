@@ -24,7 +24,7 @@ body {
 	right:0;
 	margin:10px;
 }
-#settings{
+.dropdown button{
 	background:transparent;
 	color:white;
 	padding:15px;
