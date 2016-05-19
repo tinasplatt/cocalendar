@@ -16,6 +16,7 @@
 
       var SCOPES = ["https://www.googleapis.com/auth/calendar.readonly"];
       var delay = 10;
+      var slideCount = 10;
 
       /**
        * Check if current user has authorized this application.
@@ -135,9 +136,20 @@
           } else {
             $('body').append('No upcoming events found.');
           }
-          $('.dropdown-menu li').click(function() {
+          $('#delay-selector ul li').click(function() {
             delay = $(this).text();
+            $(this).parents(".dropdown").find('button .value').text(delay);
           })
+          $('#settings-toggle').click(function() {
+            $('#settings').toggle();
+          })
+          $('#slide-count-selector ul li').click(function() {
+            slideCount = $(this).text();
+            $(this).parents(".dropdown").find('button .value').text(slideCount);
+
+          })
+          $('#delay-selector button .value').text(delay);
+          $('#slide-count-selector button .value').text(slideCount);
           $('.slide:first-child').show();
           animate();
 
@@ -147,7 +159,7 @@
       function animate() {
         setTimeout(function() {
           var index = $('.slide:visible').index();
-          if (index == $('.slide').length - 1) {
+          if (index == $('.slide').length - 1 || index == slideCount - 1) {
             index = 1;
           } else {
             index = index + 2;
@@ -236,16 +248,40 @@
     </script>
   </head>
   <body>
-    <div class="dropdown">
-      <button class="btn btn-default dropdown-toggle" type="button" id="settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        <li><a>5</a></li>
-        <li><a>10</a></li>
-        <li><a>15</a></li>
-        <li><a>20</a></li>
-      </ul>
+    <div id='settings-toggle'>
+      <span class='glyphicon glyphicon-cog'></span>
+    </div>
+    <div class='panel panel-default' id='settings'>
+      <div class='panel-body'>
+        <h5>Delay time</h5>
+        <div class="dropdown" id='delay-selector'>
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class='value'></span> <span class="caret"></span></button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a>5 </a></li>
+            <li><a>10</a></li>
+            <li><a>15</a></li>
+            <li><a>20</a></li>
+          </ul>
+
+        </div>
+        <h5># of slides</h5>
+        <div class="dropdown" id="slide-count-selector">
+          <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class='value'></span> <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li><a>3</a></li>
+            <li><a>4</a></li>
+            <li><a>5</a></li>
+            <li><a>6</a></li>
+            <li><a>7</a></li>
+            <li><a>8</a></li>
+            <li><a>9</a></li>
+            <li><a>10</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div id="authorize-div" style="display: none">
       <div class='container'>

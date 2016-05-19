@@ -20,14 +20,32 @@ body {
 	background: black;
 }
 .dropdown {
-	position: fixed;
-	right:0;
 	margin:10px;
+	display: block;
+
 }
 .dropdown button{
-	background:transparent;
-	color:white;
 	padding:15px;
+	display: block;
+
+}
+.dropdown-menu{
+	/*width:20px;*/
+	min-width: 20px;
+}
+#settings {
+	float:right;
+	margin:20px 0px;
+
+}
+#settings-toggle{ 
+	background: rgba(0,0,0,0.1);
+	float:right;
+	margin:20px 20px 0 0;
+	border: 1px solid #999999;
+	border-radius: 4px;
+	padding:10px;
+	color:white;
 
 }
 #authorize-div {
