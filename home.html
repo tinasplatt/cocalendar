@@ -198,7 +198,7 @@
             //   break;
             // default:
               // url =  attributes.location;
-          switch(Math.floor(Math.random() * 5)) {
+          switch(Math.floor(Math.random() * 5)) g{
             case 0:
               url = 'landscape1.png';
               break;
@@ -248,11 +248,18 @@
       </ul>
     </div>
     <div id="authorize-div" style="display: none">
-      <span>Authorize access to Google Calendar API</span>
-      <!--Button for the user to click to initiate auth sequence -->
-      <button id="authorize-button" onclick="handleAuthClick(event)">
-        Authorize
-      </button>
+      <div class='container'>
+        <div class='panel panel-default'>
+          <div class='panel-body'>
+            <h3>Authorize access to Google Calendar API</h3>
+            <p>Only you will have access to your data. </p>
+            <!--Button for the user to click to initiate auth sequence -->
+            <button id="authorize-button" onclick="handleAuthClick(event)" class='btn btn-primary'>
+              Authorize
+            </button>
+          </panel>
+        </div>
+      </div>
     </div>
     <div id='view'>
 
